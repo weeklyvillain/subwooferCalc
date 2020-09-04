@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      const { ipcRenderer } = require('electron')
+      console.log(ipcRenderer.sendSync('ping', 'ping')) // prints "pong"
+
+      let sendParams = () => {
+        let speakerParams = {};
+        
+        speakerParams["fs"] = document.getElementById("fs").value;
+        speakerParams["qts"] = document.getElementById("qts").value;
+        speakerParams["qes"] = document.getElementById("qes").value;
+        speakerParams["vas"] = document.getElementById("vas").value
+        let boxType = ipcRenderer.sendSync("speakerParams", speakerParams);
+
+        let boxTypeElement = document.getElementById("boxTypeElem");
+
+        boxTypeElement.innerHTML = boxType;
+      }
+    </script>
+    <meta charset="UTF-8">
+    <title>Subwoofer Calulator!</title>
+    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+  </head>
+  <body>
+    <h1 id="boxTypeElem"></h1>
+    <form action="javascript:sendParams()">
+      <input type="text" id="fs" placeholder="FS"><br><br>
+      <input type="text" id="qts" placeholder="QTS"><br><br>
+      <input type="text" id="qes" placeholder="QES"><br><br>
+      <input type="text" id="vas" placeholder="VAS"><br><br>
+      <input type="submit" value="CalcBox">
+    </form> 
+  </body>
+</html>
